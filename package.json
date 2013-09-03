@@ -1,0 +1,45 @@
+{
+  "name": "grunt-sauce-tunnel",
+  "description": "Runs the saucelabs tunnel",
+  "version": "0.1.0",
+  "homepage": "https://github.com/civitaslearning/grunt-sauce-tunnel",
+  "author": {
+    "name": "Dan Harbin",
+    "email": "dan.harbin@civitaslearning.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/civitaslearning/grunt-sauce-tunnel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/civitaslearning/grunt-sauce-tunnel/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/civitaslearning/grunt-sauce-tunnel/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "sauce-tunnel": "1.0.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt": "~0.4.1"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.1"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
