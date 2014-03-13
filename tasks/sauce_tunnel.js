@@ -8,56 +8,48 @@
 
 'use strict';
 
-module.exports = function(grunt) {
+(function () {
+	var SauceTunnel = require('sauce-tunnel');
 
-	// Please see the Grunt documentation for more information regarding task
-	// creation: http://gruntjs.com/creating-tasks
-
-	grunt.registerMultiTask('sauce_tunnel', 'Runs the saucelabs tunnel', function() {
-		// Merge task-specific and/or target-specific options with these defaults.
-		var options = this.options({
-			username: process.env.SAUCE_USERNAME,
-			key: process.env.SAUCE_ACCESS_KEY,
-			identifier: 'workaround', // *have* to specify an identifier thanks to sauce-tunnel... TODO
-			tunnelTimeout: 120
-		});
-
-		var SauceTunnel = require('sauce-tunnel');
-		var done = null;
-		var tunnel = null;
-
-		var finished = function () {
-			if (done) {
-				done();
-
-				done = null;
-			}
-		};
-
+	module.exports = function (grunt) {
 		function configureLogEvents(tunnel) {
 			var methods = ['write', 'writeln', 'error', 'ok', 'debug'];
 			methods.forEach(function (method) {
-			tunnel.on('log:'+method, function (text) {
-				grunt.log[method](text);
-			});
-			tunnel.on('verbose:'+method, function (text) {
-				grunt.verbose[method](text);
-			});
+				tunnel.on('log:' + method, function (text) {
+					grunt.log[method](text);
+				});
+				tunnel.on('verbose:' + method, function (text) {
+					grunt.verbose[method](text);
+				});
 			});
 		}
 
-		var plugin = {
-			start: function (options) {
+		grunt.registerMultiTask('sauce_tunnel', 'Runs the Sauce Labs tunnel', function () {
+			// Merge task-specific and/or target-specific options with these defaults.
+			var options = this.options({
+				username: process.env.SAUCE_USERNAME,
+				key: process.env.SAUCE_ACCESS_KEY
+			});
+
+			var done = null,
+				tunnel = null;
+
+			var finished = function () {
+				if (done) {
+					done();
+					done = null;
+				}
+			};
+
+			function start(options) {
 				if (tunnel) {
-					this.stop();
+					stop();
 
 					if (grunt.task.current.flags.stop) {
 						finished();
 						return;
 					}
 				}
-
-				grunt.log.writeln('Starting'.cyan + ' saucelabs tunnel');
 
 				done = grunt.task.current.async();
 
@@ -66,37 +58,40 @@ module.exports = function(grunt) {
 					options.key,
 					options.identifier,
 					true, // tunneled = true
-					options.tunnelTimeout
+					['-v']
 				);
+
 				configureLogEvents(tunnel);
 
-				tunnel.start(function (isCreated) {
-					if (!isCreated) {
-						// TODO FIXME
+				grunt.log.writeln('Open'.cyan + ' Sauce Labs tunnel: ' + tunnel.identifier.cyan);
+
+				tunnel.start(function (status) {
+					if (status === false) {
+						grunt.fatal('Failed'.red + ' to open Sauce Labs tunnel: ' + tunnel.identifier.cyan);
 					}
-					grunt.log.ok("Connected to Saucelabs");
+
+					grunt.log.ok('Successfully'.green + ' opened Sauce Labs tunnel:' + tunnel.identifier.cyan);
 					finished();
 				});
 
 				tunnel.on('exit', finished);
-				tunnel.on('exit', this.stop);
-			},
-			stop: function () {
+				tunnel.on('exit', stop);
+			}
+
+			function stop() {
 				if (tunnel && tunnel.stop) {
-					grunt.log.writeln('Stopping'.red + 'sacuelabs tunnel');
+					grunt.log.writeln('Stopping'.cyan + 'Sauce Labs tunnel:' + tunnel.identifier.cyan);
 					tunnel.stop(function () {
+						grunt.log.writeln('Stopped'.red + 'Sauce Labs tunnel:' + tunnel.identifier.cyan);
 						tunnel = null;
-						grunt.log.writeln('Stopped'.red + 'saucelabs tunnel');
 						finished();
 					});
-				}
-				else {
+				} else {
 					finished();
 				}
 			}
-		};
 
-		plugin.start(options);
-	});
-
-};
+			start(options);
+		});
+	};
+})();

@@ -1,7 +1,7 @@
 {
   "name": "grunt-sauce-tunnel",
   "description": "Runs the saucelabs tunnel",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/civitaslearning/grunt-sauce-tunnel",
   "author": {
     "name": "Dan Harbin",
@@ -28,18 +28,25 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "sauce-tunnel": "1.0.1"
+    "sauce-tunnel": "2.0.1"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt": "~0.4.1"
+    "grunt": "~0.4.4"
   },
   "peerDependencies": {
-    "grunt": "~0.4.1"
+    "grunt": "~0.4.4"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "selenium",
+    "saucelabs",
+    "sauce labs",
+    "sauceconnect",
+    "sauce connect",
+    "testing",
+    "local tunnel"
   ]
 }
