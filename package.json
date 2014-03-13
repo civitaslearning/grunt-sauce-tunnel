@@ -28,7 +28,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "sauce-tunnel": "2.0.1"
+    "sauce-tunnel": "seckardt/sauce-tunnel#2f601f497a7dc0de8551eeb97d18eaf5339abccc"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
