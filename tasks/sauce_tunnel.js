@@ -70,7 +70,7 @@
 						grunt.fatal('Failed'.red + ' to open Sauce Labs tunnel: ' + tunnel.identifier.cyan);
 					}
 
-					grunt.log.ok('Successfully'.green + ' opened Sauce Labs tunnel:' + tunnel.identifier.cyan);
+					grunt.log.ok('Successfully'.green + ' opened Sauce Labs tunnel: ' + tunnel.identifier.cyan);
 					finished();
 				});
 
@@ -80,9 +80,9 @@
 
 			function stop() {
 				if (tunnel && tunnel.stop) {
-					grunt.log.writeln('Stopping'.cyan + 'Sauce Labs tunnel:' + tunnel.identifier.cyan);
+					grunt.log.writeln('Stopping'.cyan + 'Sauce Labs tunnel: ' + tunnel.identifier.cyan);
 					tunnel.stop(function () {
-						grunt.log.writeln('Stopped'.red + 'Sauce Labs tunnel:' + tunnel.identifier.cyan);
+						grunt.log.writeln('Stopped'.red + 'Sauce Labs tunnel: ' + tunnel.identifier.cyan);
 						tunnel = null;
 						finished();
 					});
