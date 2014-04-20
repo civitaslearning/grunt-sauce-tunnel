@@ -9,7 +9,8 @@
 'use strict';
 
 (function () {
-	var SauceTunnel = require('sauce-tunnel');
+	var SauceTunnel = require('sauce-tunnel'),
+        tunnels =  {};
 
 	module.exports = function (grunt) {
 		function configureLogEvents(tunnel) {
@@ -23,6 +24,49 @@
 				});
 			});
 		}
+
+		grunt.registerMultiTask('sauce_tunnel_stop', 'Stop the Sauce Labs tunnel', function () {
+			// Merge task-specific and/or target-specific options with these defaults.
+			var options = this.options({
+				username: process.env.SAUCE_USERNAME,
+				key: process.env.SAUCE_ACCESS_KEY
+			});
+
+            var done = null,
+                tunnel = null;
+
+            // try to find active tunnel
+            tunnel = tunnels[options.identifier];
+
+			if(!tunnel){
+				tunnel = new SauceTunnel(
+					options.username,
+					options.key,
+					options.identifier,
+					false, // tunneled = true
+					['-v']
+				);
+			}
+
+
+
+            done = grunt.task.current.async();
+
+
+            var finished = function(err){
+                if(err){
+                    grunt.fail.warn(err);
+                }
+                if (done) {
+                    done();
+                    done = null;
+                }
+
+            };
+
+			tunnel.stop(finished);
+
+		});
 
 		grunt.registerMultiTask('sauce_tunnel', 'Runs the Sauce Labs tunnel', function () {
 			// Merge task-specific and/or target-specific options with these defaults.
@@ -60,6 +104,9 @@
 					true, // tunneled = true
 					['-v']
 				);
+
+                // keep actives tunnel in memory for stop task
+                tunnels[tunnel.identifier] = tunnel;
 
 				configureLogEvents(tunnel);
 
