@@ -1,7 +1,7 @@
 {
   "name": "grunt-sauce-tunnel",
   "description": "Runs the saucelabs tunnel",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/civitaslearning/grunt-sauce-tunnel",
   "author": {
     "name": "Dan Harbin",
