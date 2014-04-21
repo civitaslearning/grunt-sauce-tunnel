@@ -1,6 +1,6 @@
 # grunt-sauce-tunnel
 
-> Runs the saucelabs tunnel
+> Runs and stops the saucelabs tunnel
 
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
@@ -61,3 +61,42 @@ Type: `Number`
 Default value: 120
 
 A numeric value indicating the time to wait before closing all tunnels.
+
+
+## The "sauce_tunnel\_stop" task
+
+### Overview
+In your project's Gruntfile, add a section named `sauce_tunnel_stop` to the data object passed into `grunt.initConfig()`.
+
+```js
+grunt.initConfig({
+  sauce_tunnel_stop: {
+    options: {
+        username: 'your sauce username',
+        key: 'your sauce key',
+        identifier: 'tunnel identifier'
+    },
+    server: {}
+  },
+})
+```
+
+If stop task is executed after the run task, it's close tunnel on sauce lab server and kill local process. If stop task is executed alone, it's only clause tunnel on sauce lab server.
+
+### Options
+
+#### options.username
+Type: `String`
+Default value: `process.env.SAUCE_USERNAME`
+
+Your Saucelabs username
+
+#### options.key
+Type: `String`
+Default value: `process.env.SAUCE_ACCESS_KEY`
+
+Your Saucelabs key
+
+#### options.identifier
+Type: `String`
+Default value: `workaround`
