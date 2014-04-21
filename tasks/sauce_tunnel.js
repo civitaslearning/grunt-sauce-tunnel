@@ -47,6 +47,10 @@
 					['-v']
 				);
 			}
+			else
+			{
+				delete tunnels[options.identifier];
+			}
 
 
 			done = grunt.task.current.async();
