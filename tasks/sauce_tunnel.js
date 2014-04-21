@@ -10,7 +10,7 @@
 
 (function () {
 	var SauceTunnel = require('sauce-tunnel'),
-        tunnels =  {};
+	tunnels =  {};
 
 	module.exports = function (grunt) {
 		function configureLogEvents(tunnel) {
@@ -32,11 +32,11 @@
 				key: process.env.SAUCE_ACCESS_KEY
 			});
 
-            var done = null,
-                tunnel = null;
+			var done = null,
+			tunnel = null;
 
-            // try to find active tunnel
-            tunnel = tunnels[options.identifier];
+			// try to find active tunnel
+			tunnel = tunnels[options.identifier];
 
 			if(!tunnel){
 				tunnel = new SauceTunnel(
@@ -49,20 +49,19 @@
 			}
 
 
+			done = grunt.task.current.async();
 
-            done = grunt.task.current.async();
 
+			var finished = function(err){
+				if(err){
+					grunt.fail.warn(err);
+				}
+				if (done) {
+					done();
+					done = null;
+				}
 
-            var finished = function(err){
-                if(err){
-                    grunt.fail.warn(err);
-                }
-                if (done) {
-                    done();
-                    done = null;
-                }
-
-            };
+			};
 
 			tunnel.stop(finished);
 
@@ -105,8 +104,8 @@
 					['-v']
 				);
 
-                // keep actives tunnel in memory for stop task
-                tunnels[tunnel.identifier] = tunnel;
+				// keep actives tunnel in memory for stop task
+				tunnels[tunnel.identifier] = tunnel;
 
 				configureLogEvents(tunnel);
 
